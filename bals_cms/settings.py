@@ -46,8 +46,11 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'taggit',
     'markdownx',
+    'django_countries',
     
+    # apps
     'courses.apps.CoursesConfig',
+    'contacts.apps.ContactsConfig',
 ]
 
 INTERNAL_IPS = [

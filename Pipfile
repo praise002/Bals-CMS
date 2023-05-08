@@ -12,6 +12,7 @@ djangorestframework = "*"
 django-taggit = "*"
 django-markdownx = "*"
 pillow = "*"
+django-countries = "*"
 
 [dev-packages]
 
