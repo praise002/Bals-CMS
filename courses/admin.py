@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import Course, Week
+from django.contrib.contenttypes.admin import GenericTabularInline
+from .models import Course, Week, Content, Text, File, Image, Video
 
 
 class WeekInline(admin.StackedInline):
@@ -13,4 +14,21 @@ class CourseAdmin(admin.ModelAdmin):
   prepopulated_fields = {'slug': ('title',)}
   inlines = [WeekInline]
 
+class ContentInline(GenericTabularInline):
+  model = Content
+  
+@admin.register(Text)
+class TextAdmin(admin.ModelAdmin):
+  inlines = [ContentInline]
 
+@admin.register(File)
+class FileAdmin(admin.ModelAdmin):
+  inlines = [ContentInline]
+
+@admin.register(Image)
+class ImageAdmin(admin.ModelAdmin):
+  inlines = [ContentInline]
+  
+@admin.register(Video)
+class VideoAdmin(admin.ModelAdmin):
+  inlines = [ContentInline]

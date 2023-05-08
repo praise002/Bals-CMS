@@ -1,5 +1,7 @@
 from django.db import models
 from django.utils import timezone
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.contenttypes.fields import GenericForeignKey
 from markdownx.models import MarkdownxField
 from taggit.managers import TaggableManager
 
@@ -31,6 +33,45 @@ class Week(models.Model):
   def __str__(self):
     return self.title
 
+class Content(models.Model):
+  week = models.ForeignKey(Week, related_name='contents',on_delete=models.CASCADE)
+  content_type = models.ForeignKey(ContentType, 
+                                  on_delete=models.CASCADE,
+                                  limit_choices_to={'model__in':(
+                                                    'text',
+                                                    'video',
+                                                    'image',
+                                                    'file')})
+  object_id = models.PositiveIntegerField()
+  item = GenericForeignKey('content_type', 'object_id')
+  
+class ItemBase(models.Model):
+  owner = models.ForeignKey('auth.User', related_name='%(class)s_related', on_delete=models.CASCADE)
+  # might need to remove title later
+  title = models.CharField(max_length=250)
+  created = models.DateTimeField(auto_now_add=True)
+  updated = models.DateTimeField(auto_now=True)
+  
+  class Meta:
+    abstract = True
+    
+  def __str__(self):
+    return self.title
+
+class Text(ItemBase):
+  content = models.TextField()
+  
+class File(ItemBase):
+  file = models.FileField(upload_to='files')
+  
+class Image(ItemBase):
+  file = models.FileField(upload_to='images')
+  
+class Video(ItemBase):
+  url = models.URLField()
+
+
+
 # class Review(models.Model):
 #   user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
 #   course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='reviews')
@@ -42,5 +83,3 @@ class Week(models.Model):
   
 #   def __str__(self):
 #     return f'{self.course.title} - {self.rating}'
-
-
