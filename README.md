@@ -29,3 +29,6 @@
 - pipenv install Pillow
 
 
+<!-- TODO: CRUD -->
+/courses: create and display all courses
+/courses/id: retrieve a particular course, update and destroy

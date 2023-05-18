@@ -25,7 +25,8 @@ urlpatterns = [
     path('markdownx/', include('markdownx.urls')),
     path('api-auth/', include('rest_framework.urls')),
     
-    path('', include('contacts.urls', namespace='contact')),
+    path('contact/', include('contacts.urls', namespace='contact')),
+    path('courses/', include('courses.urls', namespace='courses')),
 ]
 
 if settings.DEBUG:
